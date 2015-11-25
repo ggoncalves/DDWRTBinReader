@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DDWRTBinReader;
+using System.Collections.Generic;
 
 namespace DDWRTBinReaderTest
 {
@@ -18,5 +19,6 @@ namespace DDWRTBinReaderTest
             string[] args = { "Filename" };
             Assert.IsFalse(Program.validate(args));
         }
+
     }
 }
