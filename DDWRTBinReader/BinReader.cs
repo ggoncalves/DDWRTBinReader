@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 
 namespace DDWRTBinReader
@@ -18,30 +19,38 @@ namespace DDWRTBinReader
         {
             using (BinaryReader breader = new BinaryReader(File.Open(_path, FileMode.Open)))
             {
+
                 // Reads the header.
                 UTF8Encoding enc = new UTF8Encoding();
-                byte[] header = breader.ReadBytes(6);
-                string b2 = enc.GetString(header, 0, 6);
-                System.Console.WriteLine(b2);
-                colocar no git e continuar.
+                char[] header = breader.ReadChars(6);
+                System.Console.WriteLine(header);
+
                 short sh = breader.ReadInt16();
-                System.Console.WriteLine( sh  );
+                System.Console.WriteLine(sh);
 
-                int lenght = breader.ReadByte();
-                System.Console.WriteLine(lenght);
+                while (breader.PeekChar() != -1)
+                {
 
-                char[] name = breader.ReadChars(9);
-                System.Console.WriteLine( name  );
+                    int lenght = breader.ReadByte();
+                    //System.Console.WriteLine("length: {0}", lenght);
 
-                int lenghtValue = breader.ReadInt16();
-                System.Console.WriteLine(lenghtValue);
+                    char[] name = breader.ReadChars(lenght);
+                    //System.Console.WriteLine(name);
 
-                //char[] name = breader.ReadChars(9);
-                //System.Console.WriteLine(name);
+                    byte[] lenghtValueByte = breader.ReadBytes(2);
+                    ushort lenghtValue = BitConverter.ToUInt16(lenghtValueByte, 0);
+                    //System.Console.WriteLine("lenghtValue: {0}", lenghtValue);
 
-                //// Read header.
-                //System.Console.WriteLine(enc.GetCharCount(_bytes, 7, 2));
+                    if (lenghtValue > 0)
+                    {
+                        char[] value = breader.ReadChars(lenghtValue);
+                        System.Console.WriteLine(new string(name) + " : " + new string(value));
+                        //System.Console.Read();
 
+                    }
+
+
+                }
                 System.Console.Read();
             }
         }
