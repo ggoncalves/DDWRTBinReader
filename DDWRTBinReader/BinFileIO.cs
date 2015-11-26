@@ -17,10 +17,10 @@ namespace DDWRTBinReader
             _path = pathname;
         }
 
-        public void WriteContent(LinkedList<Parameter> paramList)
+        public void WriteContent(LinkedList<Parameter> paramList, string filepath)
         {
             using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(@"outfile.txt"))
+            new System.IO.StreamWriter(@filepath))
             {
                 foreach (Parameter p in paramList)
                 {
@@ -32,7 +32,7 @@ namespace DDWRTBinReader
         public LinkedList<Parameter> ReadContent()
         {
             LinkedList<Parameter> linkedList = new LinkedList<Parameter>();
-            using (BinaryReader breader = new BinaryReader(File.Open(_path, FileMode.Open)))
+            using (BinaryReader breader = new BinaryReader(File.Open(_path, FileMode.Open), Encoding.ASCII))
             {
 
                 // Reads the header.
@@ -43,7 +43,6 @@ namespace DDWRTBinReader
                 // Reads the file content.
                 while (breader.PeekChar() != EOF)
                 {
-
                     // name bytes.
                     int nameLenght = breader.ReadByte();
                     char[] name = breader.ReadChars(nameLenght);
@@ -57,9 +56,8 @@ namespace DDWRTBinReader
                     {
                         value = breader.ReadChars(valueLenght);
                     }
-                    Parameter p = new Parameter(new string(name), new string(value));
+                    Parameter p = new Parameter(name, value);
                     linkedList.AddLast(p);
-
 
                 }
 
@@ -73,7 +71,7 @@ namespace DDWRTBinReader
             {
                 Console.WriteLine(p.Name + ": " + p.Value);
             }
-            System.Console.Read();
+            System.Console.ReadLine();
         }
     }
 }

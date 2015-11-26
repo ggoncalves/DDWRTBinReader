@@ -5,9 +5,9 @@ using System.IO;
 
 
 // TODO:
-// Create structure to represent values (can use Dictionary)
-// Refactor read class from reader to I/O.
-// Provide Writing funcionality
+// OK Create structure to represent values (can use Dictionary)
+// OK Refactor read class from reader to I/O.
+// OK Provide Writing funcionality
 // Allow customization in writing sequence (alpha, NULL values first/last, same order)
 // Document code using site original reference
 // Document README.TXT
@@ -18,28 +18,41 @@ using System.IO;
 // Done
 namespace DDWRTBinReader
 {
+
     public class Program
     {
+
         static void Main(string[] args)
         {
             if (validate(args))
             {
                 BinFileIO binIO = new BinFileIO(args[0]);
                 LinkedList<Parameter> linkedList = binIO.ReadContent();
-                binIO.WriteContent(linkedList);
-                Console.WriteLine("Finished");
+                binIO.WriteContent(linkedList, args[1]);
+                Console.WriteLine("Done");
                 Console.Read();
             }
         }
 
         public static bool validate(String[] args)
         {
-            if (args == null || args.Length == 0)
+            if (validateLine(args))
             {
-                Console.WriteLine("You must inform the complete path to the dd-wrt bin file.");
+                return File.Exists(args[0]);
+            }
+            Console.WriteLine("You must inform 2 arguments: ");
+            Console.WriteLine(" - the absolute path to source dd-wrt bin file;");
+            Console.WriteLine(" - the absolute path to destiny txt file.");
+            return false;
+        }
+
+        public static bool validateLine(String[] args)
+        {
+            if (args == null || args.Length < 2)
+            {
                 return false;
             }
-            return File.Exists(args[0]);
+            return true;
         }
     }
 }

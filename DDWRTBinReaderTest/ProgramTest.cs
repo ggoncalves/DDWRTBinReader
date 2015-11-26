@@ -8,17 +8,37 @@ namespace DDWRTBinReaderTest
     public class ProgramTest
     {
         [TestMethod]
-        public void TestValidate_InvalidFile()
+        public void TestValidateLine_NullLine()
         {
-            Assert.IsFalse(Program.validate(null));
+            Assert.IsFalse(Program.validateLine(null));
         }
 
         [TestMethod]
-        public void TestValidate_InvalidFilename()
+        public void TestValidateLine_IncompleteLine()
         {
             string[] args = { "Filename" };
-            Assert.IsFalse(Program.validate(args));
+            Assert.IsFalse(Program.validateLine(args));
         }
 
+        [TestMethod]
+        public void TestValidateLine_EmptyLine()
+        {
+            string[] args = { "" };
+            Assert.IsFalse(Program.validateLine(args));
+        }
+
+        [TestMethod]
+        public void TestValidateLine_BlankLine()
+        {
+            string[] args = { "   " };
+            Assert.IsFalse(Program.validateLine(args));
+        }
+
+        [TestMethod]
+        public void TestValidateLine_Valid()
+        {
+            string[] args = { "pathtobin.bin", "pathtotxt.txt" };
+            Assert.IsTrue(Program.validateLine(args));
+        }
     }
 }
