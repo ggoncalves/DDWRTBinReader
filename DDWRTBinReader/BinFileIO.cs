@@ -49,6 +49,10 @@ namespace DDWRTBinReader
 
                     // value bytes.
                     byte[] valueLenghtBytes = breader.ReadBytes(2);
+
+                    // Solve bug where last iteration doesnt retrieve any value.
+                    if (valueLenghtBytes.Length == 0) continue;
+
                     ushort valueLenght = BitConverter.ToUInt16(valueLenghtBytes, 0);
 
                     char[] value = null;

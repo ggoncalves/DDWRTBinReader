@@ -30,7 +30,6 @@ namespace DDWRTBinReader
                 LinkedList<Parameter> linkedList = binIO.ReadContent();
                 binIO.WriteContent(linkedList, args[1]);
                 Console.WriteLine("Done");
-                Console.Read();
             }
         }
 
